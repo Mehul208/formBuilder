@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import FormQuestion from "./FormQuestion";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
@@ -8,6 +8,14 @@ const FormEditor = () => {
     const [headerImage, setHeaderImage] = useState(null);
     const [data, setData] = useState([]);
     const { formId } = useParams();
+    // const [formData, setFormData] = useState(localStorage.getItem("forms"));
+
+    // useEffect(()=>{
+    //     const localData = localStorage.getItem("forms");
+    //     const existing = localData.find((form)=>form.id === formId);
+    //     console.log(existing);
+    // })
+
     const handleAddQuestion = () => {
         setQuestions([...questions, { type: "", content: "" }]);
     };
@@ -21,11 +29,23 @@ const FormEditor = () => {
 
     const handleSaveForm = async () => {
         try {
-            const formData = { questions, headerImage };
-            const response = await axios.post("/api/forms", formData);
-            console.log(response.data); // Assuming the API returns the saved form data
+            // const formData = { questions, headerImage };
+            // const response = await axios.post("/api/forms", formData);
+            // console.log(response.data); // Assuming the API returns the saved form data
             // Redirect to the form preview page with the formId
             // You can use a router or window.location to redirect
+            if (data.length) {
+                const localData = JSON.parse(localStorage.getItem("forms"));
+                let currentForm = localData.find((form) => form.id === formId);
+                currentForm["formData"] = data;
+                let updatedData = localData.filter(
+                    (form) => form.id !== formId
+                );
+                localStorage.setItem(
+                    "forms",
+                    JSON.stringify([...updatedData, currentForm])
+                );
+            }
         } catch (error) {
             console.error("Error saving form:", error);
         }

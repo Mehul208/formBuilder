@@ -5,7 +5,6 @@ import CategorizeQuestion from "./formTypes/CategorizeQuestion";
 
 const FormQuestion = ({ index, question, onChange, data, setData }) => {
     const [questiontype, setQuestiontype] = useState();
-    const [categorizeData, setCategorizeData] = useState([]);
     const handleQuestionTypeChange = (e) => {
         onChange(index, { ...question, type: e.target.value });
         setQuestiontype(e.target.value);
