@@ -24,7 +24,7 @@ const FormPreview = () => {
             <h1 className="text-3xl font-bold mb-4">Form Preview</h1>
             <form>
                 <div className="w-1/2 mx-auto">
-                    {data
+                    {data && data.formData
                         ? data.formData.map((form, i) => {
                               switch (form.type) {
                                   case "categorize":
@@ -64,7 +64,7 @@ const FormPreview = () => {
                                       return <p>Error Occured</p>;
                               }
                           })
-                        : "Loading ...."}
+                        : "Create questions to see the preview"}
                 </div>
             </form>
         </div>
