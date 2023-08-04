@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-const CategorizeQuestion = ({ data, setData, index, localData }) => {
+const CategorizeQuestion = ({ data, setData, index, existingData }) => {
     const [categories, setCategories] = useState(
-        (localData && localData.categories) || [""]
+        (existingData && existingData.categories) || [""]
     );
     const [items, setItems] = useState(
-        (localData && localData.items) || [{ item: "", categoryIndex: 0 }]
+        (existingData && existingData.items) || [{ item: "", categoryIndex: 0 }]
     );
 
     const handleSaveQuestion = () => {
@@ -15,12 +15,11 @@ const CategorizeQuestion = ({ data, setData, index, localData }) => {
             type: "categorize",
             questionData: { categories, items },
         };
-        if(localData){
+        if (existingData) {
             console.log("in 19");
-            const updatedArray = data.filter((item)=> item.index !== index);
+            const updatedArray = data.filter((item) => item.index !== index);
             setData([...updatedArray, newData]);
-        }
-        else setData([...data, newData]);
+        } else setData([...data, newData]);
         alert("Question saved successfully");
     };
 

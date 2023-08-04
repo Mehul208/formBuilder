@@ -1,9 +1,10 @@
 const FormSchema = require("../models/forms");
 
 const getForms = async (req, res) => {
+    console.log(req.path);
     try {
         const data = await FormSchema.find().select("-formData");
-        if (data) return res.status(200).send({ data: data });
+        if (data) return res.status(200).send({ data });
         return res.status(404).json({ error: "Nothing Found" });
     } catch (error) {
         return res.status(500).json({ error: "Internal Server Error" });
@@ -11,6 +12,7 @@ const getForms = async (req, res) => {
 };
 
 const createForm = async (req, res) => {
+    console.log(req.path);
     try {
         const { formId, name } = req.body;
         if (!formId || !name)
@@ -31,6 +33,7 @@ const createForm = async (req, res) => {
 };
 
 const getFormData = async (req, res) => {
+    console.log(req.path);
     try {
         const { formId } = req.body;
         if (!formId)
@@ -44,6 +47,7 @@ const getFormData = async (req, res) => {
 };
 
 const updateFormData = async (req, res) => {
+    console.log(req.path);
     try {
         const { formId, newFormData } = req.body;
         if (!formId)

@@ -29,7 +29,7 @@ const RenderCloze = ({ questionData }) => {
                               const space =
                                   sentence.length - 1 === i ? "." : " ";
                               const index = words.indexOf(word);
-                              if (index !== -1) return <DropOption />;
+                              if (index !== -1) return <DropOption key={i}/>;
                               return word + space;
                           })
                         : ""}

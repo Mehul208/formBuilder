@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
-const ComprehensiveQuestion = ({ data, setData, index, localData }) => {
+const ComprehensiveQuestion = ({ data, setData, index, existingData }) => {
     const [comprehensionText, setComprehensionText] = useState(
-        (localData && localData.comprehensionText) || ""
+        (existingData && existingData.comprehensionText) || ""
     );
     const [questions, setQuestions] = useState(
-        (localData && localData.questions) || []
+        (existingData && existingData.questions) || []
     );
 
     const handleSaveQuestion = () => {
@@ -14,7 +14,7 @@ const ComprehensiveQuestion = ({ data, setData, index, localData }) => {
             type: "comp",
             questionData: { comprehensionText, questions },
         };
-        if (localData) {
+        if (existingData) {
             const updatedArray = data.filter((item) => item.index !== index);
             setData([...updatedArray, newData]);
         } else setData([...data, newData]);
@@ -56,7 +56,9 @@ const ComprehensiveQuestion = ({ data, setData, index, localData }) => {
             <div className="mt-4">
                 {questions.map((question, index) => (
                     <div key={index} className="mb-4 border-b-2 pb-3">
-                        <h5 className="pl-1 font-medium my-2">Question {index+1}</h5>
+                        <h5 className="pl-1 font-medium my-2">
+                            Question {index + 1}
+                        </h5>
                         <input
                             type="text"
                             value={question.question}

@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-const ClozeQuestion = ({ data, setData, index, localData }) => {
+const ClozeQuestion = ({ data, setData, index, existingData }) => {
     const [sentence, setSentence] = useState(
-        (localData && localData.sentence) || ""
+        (existingData && existingData.sentence) || ""
     );
     const [underlinedWords, setUnderlinedWords] = useState(
-        (localData && localData.underlinedWords) || []
+        (existingData && existingData.underlinedWords) || []
     );
     const [options, setOptions] = useState(
-        (localData && localData.options) || []
+        (existingData && existingData.options) || []
     );
 
     const handleSaveQuestion = () => {
@@ -18,7 +18,7 @@ const ClozeQuestion = ({ data, setData, index, localData }) => {
             type: "cloze",
             questionData: { sentence, underlinedWords, options },
         };
-        if (localData) {
+        if (existingData) {
             const updatedArray = data.filter((item) => item.index !== index);
             setData([...updatedArray, newData]);
         } else setData([...data, newData]);
@@ -89,7 +89,7 @@ const ClozeQuestion = ({ data, setData, index, localData }) => {
                                     : handleUnderlineWord(word)
                             }
                         >
-                            {word} / 
+                            {word} /
                         </span>
                     ))}
                 </div>

@@ -9,7 +9,7 @@ const FormQuestion = ({
     onChange,
     data,
     setData,
-    localData,
+    existingData,
 }) => {
     const [questiontype, setQuestiontype] = useState(question.type || null);
     const handleQuestionTypeChange = (e) => {
@@ -38,21 +38,21 @@ const FormQuestion = ({
                     index={index}
                     data={data}
                     setData={setData}
-                    localData={localData || null}
+                    existingData={existingData || null}
                 />
             ) : questiontype === "cloze" ? (
                 <ClozeQuestion
                     index={index}
                     data={data}
                     setData={setData}
-                    localData={localData || null}
+                    existingData={existingData || null}
                 />
             ) : questiontype === "categorize" ? (
                 <CategorizeQuestion
                     index={index}
                     data={data}
                     setData={setData}
-                    localData={localData || null}
+                    existingData={existingData || null}
                 />
             ) : (
                 <p className="my-2">Please select a question type</p>
