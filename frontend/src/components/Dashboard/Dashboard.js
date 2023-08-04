@@ -38,7 +38,7 @@ const Dashboard = () => {
 
     const generateUniqueID = () => {
         return (
-            Date.now().toString(36) + Math.random().toString(36).substr(2, 5)
+            Date.now().toString(36) + Math.random().toString(36).substring(2, 5)
         );
     };
 
