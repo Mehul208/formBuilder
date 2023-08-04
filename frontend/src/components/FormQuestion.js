@@ -3,8 +3,15 @@ import ComprehensiveQuestion from "./formTypes/ComprehensiveQuestion";
 import ClozeQuestion from "./formTypes/ClozeQuestion";
 import CategorizeQuestion from "./formTypes/CategorizeQuestion";
 
-const FormQuestion = ({ index, question, onChange, data, setData }) => {
-    const [questiontype, setQuestiontype] = useState();
+const FormQuestion = ({
+    index,
+    question,
+    onChange,
+    data,
+    setData,
+    localData,
+}) => {
+    const [questiontype, setQuestiontype] = useState(question.type || null);
     const handleQuestionTypeChange = (e) => {
         onChange(index, { ...question, type: e.target.value });
         setQuestiontype(e.target.value);
@@ -15,7 +22,7 @@ const FormQuestion = ({ index, question, onChange, data, setData }) => {
     };
 
     return (
-        <div className="mb-8 p-8 w-1/2 mx-auto border-2 border-slate-200 rounded-2xl">
+        <div className="mb-8 p-8 w-1/2 mx-auto border-2 border-sky-400 rounded-2xl">
             <select
                 value={question.type}
                 onChange={handleQuestionTypeChange}
@@ -31,14 +38,21 @@ const FormQuestion = ({ index, question, onChange, data, setData }) => {
                     index={index}
                     data={data}
                     setData={setData}
+                    localData={localData || null}
                 />
             ) : questiontype === "cloze" ? (
-                <ClozeQuestion index={index} data={data} setData={setData} />
+                <ClozeQuestion
+                    index={index}
+                    data={data}
+                    setData={setData}
+                    localData={localData || null}
+                />
             ) : questiontype === "categorize" ? (
                 <CategorizeQuestion
                     index={index}
                     data={data}
                     setData={setData}
+                    localData={localData || null}
                 />
             ) : (
                 <p className="my-2">Please select a question type</p>

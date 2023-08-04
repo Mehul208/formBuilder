@@ -44,7 +44,9 @@ const Dashboard = () => {
 
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+            <h1 className="text-2xl text-center border-b-2 pb-6 font-medium mb-4">
+                Dashboard
+            </h1>
             <div className="mb-4">
                 <button
                     className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
@@ -53,27 +55,30 @@ const Dashboard = () => {
                     Create New Form
                 </button>
             </div>
-            <div>
+            <div className="flex">
                 {forms.map((form) => (
                     <div
                         key={form.id}
-                        className="border border-gray-300 rounded-md p-2 mb-2"
+                        className="border-2 border-slate-300 rounded-md flex flex-col justify-center items-center mb-2 w-64 h-32 mr-4"
                     >
-                        <Link
-                            to={`/editor/${form.id}`}
-                            className="text-blue-500 hover:underline"
-                        >
+                        <h4 className="text-slate-900 font-medium text-lg">
                             {form.name}
-                        </Link>
-                        <div className="mt-2">
+                        </h4>
+
+                        <div className="mt-4">
+                            <Link to={`/editor/${form.id}`}>
+                                <button className="bg-sky-500 hover:bg-sky-600 text-white px-3 py-1 rounded">
+                                    Edit
+                                </button>
+                            </Link>
                             <button
-                                className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md mr-2"
+                                className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded mx-2 "
                                 onClick={() => handleDeleteForm(form.id)}
                             >
                                 Delete
                             </button>
                             <Link to={`/preview/${form.id}`}>
-                                <button className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-md">
+                                <button className="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded">
                                     Preview
                                 </button>
                             </Link>

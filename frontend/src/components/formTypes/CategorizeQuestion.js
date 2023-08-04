@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-const CategorizeQuestion = ({ data, setData, index }) => {
-    const [categories, setCategories] = useState([""]); // Initialize with an empty category
-    const [items, setItems] = useState([{ item: "", categoryIndex: 0 }]); // Initialize with an empty item
+const CategorizeQuestion = ({ data, setData, index, localData }) => {
+    const [categories, setCategories] = useState(
+        (localData && localData.categories) || [""]
+    );
+    const [items, setItems] = useState(
+        (localData && localData.items) || [{ item: "", categoryIndex: 0 }]
+    );
 
     const handleSaveQuestion = () => {
         const newData = {
@@ -11,8 +15,13 @@ const CategorizeQuestion = ({ data, setData, index }) => {
             type: "categorize",
             questionData: { categories, items },
         };
-        setData([...data, newData]);
-        console.log(data);
+        if(localData){
+            console.log("in 19");
+            const updatedArray = data.filter((item)=> item.index !== index);
+            setData([...updatedArray, newData]);
+        }
+        else setData([...data, newData]);
+        alert("Question saved successfully");
     };
 
     const handleCategoryChange = (e, index) => {
@@ -53,7 +62,7 @@ const CategorizeQuestion = ({ data, setData, index }) => {
     return (
         <div className="mb-4">
             <div>
-                <span>Categories:</span>
+                <span className="pl-1 font-medium">Categories:</span>
                 <div className="my-2">
                     {categories.map((category, index) => (
                         <input
@@ -74,7 +83,7 @@ const CategorizeQuestion = ({ data, setData, index }) => {
                 </div>
             </div>
             <div>
-                <span>Items:</span>
+                <span className="pl-1 font-medium">Items:</span>
                 <div className="my-2">
                     {items.map((item, index) => (
                         <div key={index} className="flex items-center mb-2">
@@ -101,7 +110,7 @@ const CategorizeQuestion = ({ data, setData, index }) => {
                             </select>
                             {index === items.length - 1 && ( // Add new item input box if last item
                                 <span
-                                    className="text-gray-500 cursor-pointer"
+                                    className="text-gray-500 cursor-pointer mx-2"
                                     onClick={() => handleAddItem()}
                                 >
                                     +

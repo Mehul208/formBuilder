@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 
-const ClozeQuestion = ({ data, setData, index }) => {
-    const [sentence, setSentence] = useState("");
-    const [underlinedWords, setUnderlinedWords] = useState([]);
-    const [options, setOptions] = useState([]);
+const ClozeQuestion = ({ data, setData, index, localData }) => {
+    const [sentence, setSentence] = useState(
+        (localData && localData.sentence) || ""
+    );
+    const [underlinedWords, setUnderlinedWords] = useState(
+        (localData && localData.underlinedWords) || []
+    );
+    const [options, setOptions] = useState(
+        (localData && localData.options) || []
+    );
 
     const handleSaveQuestion = () => {
         const newData = {
@@ -12,8 +18,11 @@ const ClozeQuestion = ({ data, setData, index }) => {
             type: "cloze",
             questionData: { sentence, underlinedWords, options },
         };
-        setData([...data, newData]);
-        console.log(data);
+        if (localData) {
+            const updatedArray = data.filter((item) => item.index !== index);
+            setData([...updatedArray, newData]);
+        } else setData([...data, newData]);
+        alert("Question saved successfully");
     };
 
     const handleSentenceChange = (e) => {
@@ -54,15 +63,18 @@ const ClozeQuestion = ({ data, setData, index }) => {
 
     return (
         <div className="mb-4">
+            <span className="pl-1 font-medium">Write the question to show</span>
             <textarea
                 value={sentence}
                 onChange={handleSentenceChange}
                 placeholder="Enter sentence or paragraph..."
-                className="w-full border rounded-md px-2 py-1"
+                className="w-full border rounded-md px-2 py-1 my-2"
             />
             <div className="my-2">
-                <span>Underline the words to be replaced by blanks:</span>
-                <div className="inline-block ml-2">
+                <span className="pl-1 font-medium">
+                    Select the words to be replaced by blanks:
+                </span>
+                <div className="flex flex-wrap m-1">
                     {sentence.split(" ").map((word, index) => (
                         <span
                             key={index}
@@ -77,7 +89,7 @@ const ClozeQuestion = ({ data, setData, index }) => {
                                     : handleUnderlineWord(word)
                             }
                         >
-                            {word}
+                            {word} / 
                         </span>
                     ))}
                 </div>

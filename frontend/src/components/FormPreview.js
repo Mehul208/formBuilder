@@ -21,7 +21,9 @@ const FormPreview = () => {
 
     return (
         <div className="container mx-auto py-6">
-            <h1 className="text-3xl font-bold mb-4">Form Preview</h1>
+            <h1 className="text-2xl text-center border-b-2 pb-6 font-medium mb-4">
+                Form Preview
+            </h1>
             <form>
                 <div className="w-1/2 mx-auto">
                     {data && data.formData

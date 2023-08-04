@@ -7,14 +7,18 @@ const FormEditor = () => {
     const [questions, setQuestions] = useState([]);
     const [headerImage, setHeaderImage] = useState(null);
     const [data, setData] = useState([]);
+    const [localData, setLocalData] = useState();
     const { formId } = useParams();
-    // const [formData, setFormData] = useState(localStorage.getItem("forms"));
 
-    // useEffect(()=>{
-    //     const localData = localStorage.getItem("forms");
-    //     const existing = localData.find((form)=>form.id === formId);
-    //     console.log(existing);
-    // })
+    useEffect(() => {
+        const storedData = JSON.parse(localStorage.getItem("forms"));
+        const existing = storedData.find((form) => form.id === formId);
+        if (!localData && existing && existing.formData) {
+            setLocalData(existing.formData);
+            setData(existing.formData);
+        }
+        console.log(data);
+    }, [localData, formId, data]);
 
     const handleAddQuestion = () => {
         setQuestions([...questions, { type: "", content: "" }]);
@@ -45,6 +49,7 @@ const FormEditor = () => {
                     "forms",
                     JSON.stringify([...updatedData, currentForm])
                 );
+                alert("Form saved successfully")
             }
         } catch (error) {
             console.error("Error saving form:", error);
@@ -58,9 +63,11 @@ const FormEditor = () => {
 
     return (
         <div className="container mx-auto py-6">
-            <h1 className="text-3xl font-bold mb-4">Form Editor</h1>
-            <div className="mb-4">
-                <label htmlFor="headerImage" className="font-semibold">
+            <h1 className="text-2xl text-center border-b-2 pb-6 font-medium mb-4">
+                Form Editor
+            </h1>
+            <div className="my-8 flex justify-center items-center">
+                <label htmlFor="headerImage" className="font-semibold mx-4">
                     Header Image:
                 </label>
                 {headerImage && <img src={headerImage} alt="header" />}
@@ -68,42 +75,54 @@ const FormEditor = () => {
                     type="file"
                     id="headerImage"
                     onChange={handleHeaderImageChange}
-                    className="block mt-2"
+                    className="block"
                 />
             </div>
 
             <div className="mt-4">
+                {localData &&
+                    localData.map((question) => (
+                        <FormQuestion
+                            key={question.index}
+                            index={question.index}
+                            question={{ type: question.type }}
+                            onChange={handleQuestionChange}
+                            data={data}
+                            setData={setData}
+                            localData={question.questionData}
+                        />
+                    ))}
                 {questions.map((question, index) => (
                     <FormQuestion
-                        key={index}
-                        index={index}
+                        key={localData ? localData.length + index : index}
+                        index={localData ? localData.length + index : index}
                         question={question}
                         onChange={handleQuestionChange}
                         data={data}
                         setData={setData}
                     />
                 ))}
-                <div>
+                <div className="text-center">
                     <button
                         onClick={handleAddQuestion}
                         className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded"
                     >
                         Add Question
                     </button>
+                    <button
+                        onClick={handleSaveForm}
+                        className="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded mt-6 mx-4"
+                    >
+                        Save Form
+                    </button>
+                    <Link
+                        to={`/preview/${formId}`}
+                        className="bg-yellow-500 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded mt-6"
+                    >
+                        Preview Form
+                    </Link>
                 </div>
             </div>
-            <button
-                onClick={handleSaveForm}
-                className="bg-green-500 hover:bg-green-700 text-white font-medium py-2 px-4 rounded mt-6"
-            >
-                Save Form
-            </button>
-            <Link
-                to={`/preview/${formId}`}
-                className="bg-yellow-500 hover:bg-yellow-700 text-white font-medium py-2 px-4 rounded mt-6 ml-4"
-            >
-                Preview Form
-            </Link>
         </div>
     );
 };
