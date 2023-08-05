@@ -1,5 +1,5 @@
 import axios from "axios";
-const url = "http://localhost:8080/api";
+const url = "https://formbuilder-01hd.onrender.com/api";
 
 export const getAllForms = async () => {
     const { data: res } = await axios.get(`${url}/forms/all`);
